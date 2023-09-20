@@ -7,12 +7,19 @@
 
 import SwiftUI
 
+
+
+
 struct UserproView: View {
     
     @State private var isLoggedOut = false
     
     var body: some View {
-        VStack(spacing: 20) {
+        
+    
+
+                //                 已登录，显示用户信息
+                VStack(spacing: 20) {
                     Text("个人信息")
                         .font(.title)
                         .fontWeight(.bold)
@@ -20,6 +27,8 @@ struct UserproView: View {
                     Text("用户名：John Doe")
                     
                     Text("设置：...")
+                    
+                    Text((String)(isLoggedOut))
                     
                     Button(action: {
                         isLoggedOut = true
@@ -39,31 +48,20 @@ struct UserproView: View {
                         primaryButton: .cancel(Text("取消")),
                         secondaryButton: .destructive(Text("退出"), action: {
                             // 执行退出登录操作
+                            isLoggedOut.toggle()
                         })
                     )
                 }
-//        ZStack {
-//            VStack {
-//                RoundedRectangle(cornerRadius: 10)
-//                                    .frame(width: 40, height: 5)
-//                                    .foregroundColor(Color.gray)
-//                                    .padding(.top, 10)
-//                                Spacer()
-//            }
-//            NavigationView {
-//
-//                        VStack {
-//                            Text("内容视图")
-//                                .font(.largeTitle)
-//                                .padding()
-//                        }
-//                        .navigationTitle("个人信息")
-//                        .background(Color.blue) // 设置整体页面的背景颜色为蓝色
-//                        .edgesIgnoringSafeArea(.all) // 忽略安全区域，确保背景颜色填充整个屏幕
-//                    }
-//        }
+        
+        
+        
     }
 }
+
+
+
+
+
 
 struct UserproView_Previews: PreviewProvider {
     static var previews: some View {

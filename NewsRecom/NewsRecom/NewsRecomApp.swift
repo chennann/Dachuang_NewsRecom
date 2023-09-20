@@ -11,10 +11,7 @@ import SwiftUI
 struct NewsRecomApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
-//            SearchView()
-//            ReviewView()
-//            SwiftUIView()
+            SearchView()
         }
     }
 }

@@ -7,7 +7,34 @@
 
 import SwiftUI
 
+
+class KeyboardManager: ObservableObject {
+    @Published var keyboardHeight: CGFloat = 0
+    
+    init() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc func keyboardWillShow(notification: Notification) {
+        if let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
+            keyboardHeight = keyboardFrame.height
+        }
+    }
+    
+    @objc func keyboardWillHide(notification: Notification) {
+        keyboardHeight = 0
+    }
+}
+
+
 struct SearchView: View {
+    
+    @State private var selectedCircleIndices: Set<Int> = []
+    @StateObject private var keyboardManager = KeyboardManager()
+    
+    
     @State private var selectedTab = 1
     @State private var rotationDegrees = 0.0
     @State private var dis = 0.0
@@ -24,9 +51,8 @@ struct SearchView: View {
         CGPoint(x: 300, y: 100),
         CGPoint(x: 270, y: 500)
     ]
-    @State private var circleRadius: [CGFloat] = [0, 0, 20, 15, 0]
     
-    let circleTexts = ["球王\n梅西", "球迷\n拥抱\n梅西", "主办方\n保安\n被骂惨", "18岁\n行拘\n后悔", "热议\n勇敢\n惊讶"]
+    let circleTexts = ["球王梅西", "球迷拥抱梅西", "主办方保安被骂惨", "18岁行拘后悔", "热议勇敢惊讶"]
     private let lineColors: [Color] = [.red, .green, .blue, .orange, .purple]
     private let lineThicknesses: [CGFloat] = [2, 3, 1, 2.5, 1.5]
     let circleFonts: [Font] = [
@@ -38,155 +64,174 @@ struct SearchView: View {
     ]
     
     var body: some View {
-        VStack (spacing:0) {
+        NavigationView {
+            
             ZStack {
-                Text("宽视资讯")
-                    .foregroundColor(Color.white)
-                    .font(.title)
-                    .bold()
-                    .italic()
-                HStack {
-                    Button (action:{
-                        
-                    }) {
-                        Image(systemName: "line.horizontal.3")
-                            .bold()
+                VStack (spacing:0) {
+                    //头部
+                    ZStack {
+                        Text("宽视资讯")
                             .foregroundColor(Color.white)
+                            .font(.title)
+                            .bold()
+                            .italic()
+                        HStack {
+                            Button (action:{
+                                
+                            }) {
+                                Image(systemName: "line.horizontal.3")
+                                    .bold()
+                                    .foregroundColor(Color.white)
+                            }
+                            Spacer()
+                            Button (action:{
+                                showUser = true;
+                            }) {
+                                Image("user_profile")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 40, height: 40)
+                                    .clipShape(Circle())
+                                    .padding(.trailing, 5)
+                            }
+                            .sheet(isPresented: $showUser) {
+                                UserproView()
+                                
+                            }
+                        }
                     }
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 8)
+                    .background(Color("Top_color"))
+                    
+//                    Text(searchText)
                     Spacer()
-                    Button (action:{
-                        showUser = true;
-                    }) {
-                        Image("user_profile")
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 40, height: 40)
-                            .clipShape(Circle())
-                            .padding(.trailing, 5)
-                    }
-                    .sheet(isPresented: $showUser) {
-                        UserproView()
+                    ZStack {
                         
-                    }
-                }
-            }
-            .padding(.horizontal, 20)
-            .padding(.bottom, 8)
-            .background(Color.black.opacity(0.75))
-            
-            Spacer()
-            ZStack {
-                
-                Path { path in
-                    for index in 0..<circleCoordinates.count {
-                        path.move(to: circleCoordinates[1])
-                        path.addLine(to: circleCoordinates[index])
-                    }
-                }
-                .stroke(Color.black.opacity(0.7), lineWidth: 5)
-//                .stroke(lineGradient, style: StrokeStyle(lineWidth: maxLineThickness))
-                .background(Color.clear) // 添加背景以避免圆形遮挡连线
-                
-                ForEach(0..<circleCoordinates.count, id: \.self) { index in
-                    Circle()
-                        .fill(circleColors[index])
-                        .frame(width: circleDiameters[index], height: circleDiameters[index])
-                        .position(circleCoordinates[index])
-                        .shadow(color: circleColors[index], radius: circleRadius[index])
-                    Text(circleTexts[index])
-                        .foregroundColor(.white)
-//                        .font(.system(size: 14))
-                        .font(circleFonts[index])
-                        .fontWeight(.bold)
-                        .position(circleCoordinates[index])
-                }
-                
-                
-            }
-            HStack (spacing:15) {
-                TextField("搜索", text: $searchText)
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 8)
-                    .background(Color.gray.opacity(0.2))
-                    .cornerRadius(8)
-                
-                Button(action: {
-                    selectedTab = 0
-                    withAnimation {
-                        dis = 0.0
-                    }
-                    search()
-                }) {
-                    Image(systemName: "magnifyingglass")
-                        .font(.title2)
-                        .foregroundColor(Color("cus_red"))
-                        .bold()
-                }
-                .padding(.trailing, 5)
-            }
-            .padding(.horizontal, 16)
-            .padding(.bottom, 20)
-            
-//            Spacer()
-//            Divider()
-            HStack {
-                //                    Button(action: {
-                //                        selectedTab = 1
-                //                        withAnimation {
-                //                            rotationDegrees += 360.0
-                //                            dis = 0.0
-                //                        }
-                //                    }) {
-                //                        Image(systemName: "arrow.clockwise")
-                //                            .foregroundColor(Color.secondary)
-                //                            .rotationEffect(.degrees(rotationDegrees))
-                //                    }
-                Spacer()
-                Button(action:{
-                    selectedTab = 2
-                    withAnimation {
-                        dis = -10.0
+                        Path { path in
+                            for index in 0..<circleCoordinates.count {
+                                path.move(to: circleCoordinates[1])
+                                path.addLine(to: circleCoordinates[index])
+                            }
+                        }
+                        .stroke(Color.black.opacity(0.7), lineWidth: 5)
                         
+                        .background(Color.clear) // 添加背景以避免圆形遮挡连线
+                        
+                        ForEach(0..<circleCoordinates.count, id: \.self) { index in
+                            Circle()
+                                .fill(selectedCircleIndices.contains(index) ? circleColors[index].opacity(1.0) : circleColors[index].opacity(1.0))
+                                .frame(width: circleDiameters[index], height: circleDiameters[index])
+                                .position(circleCoordinates[index])
+                                .shadow(color: circleColors[index], radius: selectedCircleIndices.contains(index) ? 50 : 0)
+                                .onTapGesture {
+                                    if selectedCircleIndices.contains(index) {
+                                        selectedCircleIndices.remove(index) // 如果点击的圆圈已经被选中，则从集合中移除它
+                                    } else {
+                                        selectedCircleIndices.insert(index) // 否则，将其添加到集合中
+                                    }
+                                }
+                            
+                            
+                            
+                            
+                            Text(circleTexts[index])
+                                .foregroundColor(.white)
+                                .frame(maxWidth: circleDiameters[index])
+                                .font(circleFonts[index])
+                                .fontWeight(.bold)
+                                .position(circleCoordinates[index])
+                                .onTapGesture {
+                                    if selectedCircleIndices.contains(index) {
+                                        selectedCircleIndices.remove(index) // 如果点击的圆圈已经被选中，则从集合中移除它
+                                    } else {
+                                        selectedCircleIndices.insert(index) // 否则，将其添加到集合中
+                                    }
+                                }
+                        }
+
                     }
+                    .overlay(RoundedRectangle(cornerRadius: 20)
+                        .fill(Color.white.opacity(0.8))
+                        .frame(width: keyboardManager.keyboardHeight>0 ? 1000 : 0, height: 1000, alignment: .center)
+                        .position(x: 230, y: 500))
                     
-                }) {
-                    Image(systemName: "arrow.uturn.left")
-                        .foregroundColor(selectedTab == 2 ? .black : .white)
-                        .background(RoundedRectangle(cornerRadius: 10)
-                            .fill(RadialGradient(gradient: Gradient(colors: [Color.orange, Color.red]), center: .topLeading, startRadius: 0, endRadius: 90))
-                            .frame(width: 100, height: 50, alignment: .center)
-                            .shadow(color: Color.orange.opacity(selectedTab == 2 ? 0.9 : 0.3), radius: 8, x: 0 , y: 5)
-                        )
+                    HStack(spacing: 10) {
+                        ForEach(Array(selectedCircleIndices), id: \.self) { index in
+                            let displayText = String(circleTexts[index].prefix(6)) // 限制最多6个字符
+                            Text(displayText)
+                                .font(.system(size: 12))
+                                .foregroundColor(Color.white)
+                                .padding(.horizontal, 15)
+                                .padding(.vertical, 5)
+                                .background(circleColors[index].opacity(1.0))
+                                .clipShape(Capsule())
+                            
+                        }
+                    }
+                    .padding(.top, 20)
+                    
+                    Spacer()
+                    
+                    HStack (spacing:15) {
+                        TextField("搜索", text: $searchText)
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 8)
+                            .background(Color.gray.opacity(0.2))
+                            .cornerRadius(8)
+                        
+                        Button(action: {
+                            selectedTab = 0
+                            withAnimation {
+                                dis = 0.0
+                            }
+                            search()
+                        }) {
+                            Image(systemName: "magnifyingglass")
+                                .font(.title2)
+                                .foregroundColor(Color("cus_red"))
+                                .bold()
+                        }
+                        .padding(.trailing, 5)
+                    }
+                    .padding(.horizontal, 16)
+                    .padding(.bottom, 20)
+                    Divider()
+                    Spacer(minLength: keyboardManager.keyboardHeight>0 ? 0 : 60)
                     
                 }
-                .buttonStyle(PlainButtonStyle())
-                .offset(y: dis)
-                Spacer()
-                //                    NavigationLink("asd", destination:SearchPage())
-                //                    Button(action:{
-                //                        selectedTab = 3
-                //                        withAnimation {
-                //                            dis = 0.0
-                //                        }
-                //                    }) {
-                //                        Image(systemName: "magnifyingglass")
-                //                            .foregroundColor(selectedTab == 3 ? .black : .secondary)
-                //
-                //                    }
+                //按钮
+                .background(
+                    NavigationLink (destination: ContentView()) {
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(selectedCircleIndices.count>0 ?
+                                  RadialGradient(gradient: Gradient(colors: [Color.orange, Color.red]), center: .topLeading, startRadius: 0, endRadius: 90) :
+                                    RadialGradient(gradient: Gradient(colors: [Color.secondary, Color.secondary]), center: .topLeading, startRadius: 0, endRadius: 90))
+                            .frame(width: 100, height: 50)
+                            .shadow(color: selectedCircleIndices.count>0 ? Color.orange : Color.gray, radius: 8, x: 0 , y: 5)
+                            .offset(y: keyboardManager.keyboardHeight>0 ? 200 : 0)
+                        
+                            .overlay(Image(systemName: selectedCircleIndices.count>0 ? "arrowshape.forward.fill" : "arrowshape.forward.fill")
+                                .foregroundColor(Color.white))
+                            .font(.title2)
+                            .bold()
+                    }
+                        .disabled(selectedCircleIndices.count>0 ? false : true)
+                    
+                    , alignment: .bottom)
+                
             }
-            .padding(.horizontal, 60)
-            .font(.title2)
-            .bold()
-            .padding(.top, 20)
-            .padding(.bottom, -5)
-            .background(Color.white)
+            
         }
+            .navigationViewStyle(StackNavigationViewStyle())
+            .animation(.easeOut(duration: 0.16))
     }
     
     func search() {
         // 在这里执行搜索逻辑，根据searchText进行搜索操作
         print("执行搜索操作：\(searchText)")
     }
+    
     private var lineGradient: LinearGradient {
         LinearGradient(
             gradient: Gradient(colors: lineColors),
