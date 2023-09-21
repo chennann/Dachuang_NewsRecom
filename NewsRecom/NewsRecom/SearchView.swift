@@ -28,12 +28,17 @@ class KeyboardManager: ObservableObject {
     }
 }
 
+class LoginManager: ObservableObject {
+    @Published var isLoggedIn: Bool = false
+    @Published var userName: String = ""
+    @Published  var password: String = ""
+}
 
 struct SearchView: View {
     
     @State private var selectedCircleIndices: Set<Int> = []
     @StateObject private var keyboardManager = KeyboardManager()
-    
+    @StateObject var loginManager = LoginManager()
     
     @State private var selectedTab = 1
     @State private var rotationDegrees = 0.0
@@ -68,7 +73,7 @@ struct SearchView: View {
             
             ZStack {
                 VStack (spacing:0) {
-                    //头部
+                    //MARK: - 头部
                     ZStack {
                         Text("宽视资讯")
                             .foregroundColor(Color.white)
@@ -95,8 +100,14 @@ struct SearchView: View {
                                     .padding(.trailing, 5)
                             }
                             .sheet(isPresented: $showUser) {
-                                UserproView()
                                 
+                                if loginManager.isLoggedIn {
+                                    UserproView()
+                                }
+                                else {
+                                    LoginView(showUser: $showUser)
+                                    
+                                }
                             }
                         }
                     }
@@ -104,10 +115,9 @@ struct SearchView: View {
                     .padding(.bottom, 8)
                     .background(Color("Top_color"))
                     
-//                    Text(searchText)
                     Spacer()
                     ZStack {
-                        
+                        //MARK: - 画线
                         Path { path in
                             for index in 0..<circleCoordinates.count {
                                 path.move(to: circleCoordinates[1])
@@ -118,6 +128,7 @@ struct SearchView: View {
                         
                         .background(Color.clear) // 添加背景以避免圆形遮挡连线
                         
+                        //MARK: - 画圆圈
                         ForEach(0..<circleCoordinates.count, id: \.self) { index in
                             Circle()
                                 .fill(selectedCircleIndices.contains(index) ? circleColors[index].opacity(1.0) : circleColors[index].opacity(1.0))
@@ -134,7 +145,7 @@ struct SearchView: View {
                             
                             
                             
-                            
+                            //MARK: - 圆圈上的文字
                             Text(circleTexts[index])
                                 .foregroundColor(.white)
                                 .frame(maxWidth: circleDiameters[index])
@@ -155,13 +166,14 @@ struct SearchView: View {
                         .fill(Color.white.opacity(0.8))
                         .frame(width: keyboardManager.keyboardHeight>0 ? 1000 : 0, height: 1000, alignment: .center)
                         .position(x: 230, y: 500))
-                    
+                    //MARK: - 选中关键字
                     HStack(spacing: 10) {
                         ForEach(Array(selectedCircleIndices), id: \.self) { index in
-                            let displayText = String(circleTexts[index].prefix(6)) // 限制最多6个字符
+                            let displayText = String(circleTexts[index])
                             Text(displayText)
                                 .font(.system(size: 12))
                                 .foregroundColor(Color.white)
+                                .lineLimit(1)
                                 .padding(.horizontal, 15)
                                 .padding(.vertical, 5)
                                 .background(circleColors[index].opacity(1.0))
@@ -170,9 +182,9 @@ struct SearchView: View {
                         }
                     }
                     .padding(.top, 20)
-                    
+                    .padding(.horizontal)
                     Spacer()
-                    
+                    //MARK: - 搜索
                     HStack (spacing:15) {
                         TextField("搜索", text: $searchText)
                             .padding(.horizontal, 10)
@@ -200,7 +212,7 @@ struct SearchView: View {
                     Spacer(minLength: keyboardManager.keyboardHeight>0 ? 0 : 60)
                     
                 }
-                //按钮
+                //MARK: - 前进按钮
                 .background(
                     NavigationLink (destination: ContentView()) {
                         RoundedRectangle(cornerRadius: 10)
@@ -225,6 +237,7 @@ struct SearchView: View {
         }
             .navigationViewStyle(StackNavigationViewStyle())
             .animation(.easeOut(duration: 0.16))
+            .environmentObject(loginManager)
     }
     
     func search() {

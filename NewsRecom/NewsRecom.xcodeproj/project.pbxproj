@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		8F4A106F2AB89FA4009FC1B4 /* someNews.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8F4A106E2AB89FA4009FC1B4 /* someNews.txt */; };
 		8F4A10712AB8A432009FC1B4 /* NewsDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F4A10702AB8A432009FC1B4 /* NewsDetail.swift */; };
+		8F4A10732ABC2E6F009FC1B4 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F4A10722ABC2E6F009FC1B4 /* LoginView.swift */; };
 		8F5414C52A36BDF9007307A7 /* ReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F5414C42A36BDF9007307A7 /* ReviewView.swift */; };
 		8F5414C72A36BE0B007307A7 /* UserproView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F5414C62A36BE0B007307A7 /* UserproView.swift */; };
 		8F6390792A35AF4500BDB032 /* NewsRecomApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F6390782A35AF4500BDB032 /* NewsRecomApp.swift */; };
@@ -24,6 +25,7 @@
 /* Begin PBXFileReference section */
 		8F4A106E2AB89FA4009FC1B4 /* someNews.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = someNews.txt; sourceTree = "<group>"; };
 		8F4A10702AB8A432009FC1B4 /* NewsDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsDetail.swift; sourceTree = "<group>"; };
+		8F4A10722ABC2E6F009FC1B4 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		8F5414C42A36BDF9007307A7 /* ReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewView.swift; sourceTree = "<group>"; };
 		8F5414C62A36BE0B007307A7 /* UserproView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserproView.swift; sourceTree = "<group>"; };
 		8F6390752A35AF4500BDB032 /* NewsRecom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NewsRecom.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -74,6 +76,7 @@
 				8F4A10702AB8A432009FC1B4 /* NewsDetail.swift */,
 				8F5414C42A36BDF9007307A7 /* ReviewView.swift */,
 				8FCB12492A41D28D007EE767 /* SwiftUIView.swift */,
+				8F4A10722ABC2E6F009FC1B4 /* LoginView.swift */,
 				8F5414C62A36BE0B007307A7 /* UserproView.swift */,
 				8F63907C2A35AF4600BDB032 /* Assets.xcassets */,
 				8F63907E2A35AF4600BDB032 /* Preview Content */,
@@ -178,6 +181,7 @@
 				8F6390792A35AF4500BDB032 /* NewsRecomApp.swift in Sources */,
 				8F5414C72A36BE0B007307A7 /* UserproView.swift in Sources */,
 				8F63908E2A36A28E00BDB032 /* SearchView.swift in Sources */,
+				8F4A10732ABC2E6F009FC1B4 /* LoginView.swift in Sources */,
 				8F4A10712AB8A432009FC1B4 /* NewsDetail.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
