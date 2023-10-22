@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8F4A106F2AB89FA4009FC1B4 /* someNews.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8F4A106E2AB89FA4009FC1B4 /* someNews.txt */; };
+		8F4A10712AB8A432009FC1B4 /* NewsDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F4A10702AB8A432009FC1B4 /* NewsDetail.swift */; };
+		8F4A10732ABC2E6F009FC1B4 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F4A10722ABC2E6F009FC1B4 /* LoginView.swift */; };
 		8F5414C52A36BDF9007307A7 /* ReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F5414C42A36BDF9007307A7 /* ReviewView.swift */; };
 		8F5414C72A36BE0B007307A7 /* UserproView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F5414C62A36BE0B007307A7 /* UserproView.swift */; };
 		8F6390792A35AF4500BDB032 /* NewsRecomApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F6390782A35AF4500BDB032 /* NewsRecomApp.swift */; };
@@ -20,6 +23,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8F4A106E2AB89FA4009FC1B4 /* someNews.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = someNews.txt; sourceTree = "<group>"; };
+		8F4A10702AB8A432009FC1B4 /* NewsDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsDetail.swift; sourceTree = "<group>"; };
+		8F4A10722ABC2E6F009FC1B4 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		8F5414C42A36BDF9007307A7 /* ReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewView.swift; sourceTree = "<group>"; };
 		8F5414C62A36BE0B007307A7 /* UserproView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserproView.swift; sourceTree = "<group>"; };
 		8F6390752A35AF4500BDB032 /* NewsRecom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NewsRecom.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -67,8 +73,10 @@
 				8F6390782A35AF4500BDB032 /* NewsRecomApp.swift */,
 				8F63907A2A35AF4500BDB032 /* ContentView.swift */,
 				8F63908D2A36A28D00BDB032 /* SearchView.swift */,
+				8F4A10702AB8A432009FC1B4 /* NewsDetail.swift */,
 				8F5414C42A36BDF9007307A7 /* ReviewView.swift */,
 				8FCB12492A41D28D007EE767 /* SwiftUIView.swift */,
+				8F4A10722ABC2E6F009FC1B4 /* LoginView.swift */,
 				8F5414C62A36BE0B007307A7 /* UserproView.swift */,
 				8F63907C2A35AF4600BDB032 /* Assets.xcassets */,
 				8F63907E2A35AF4600BDB032 /* Preview Content */,
@@ -89,6 +97,7 @@
 			children = (
 				8FCB124B2A41E2C0007EE767 /* review.txt */,
 				8F6390892A35FBD700BDB032 /* news.txt */,
+				8F4A106E2AB89FA4009FC1B4 /* someNews.txt */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -151,6 +160,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8F4A106F2AB89FA4009FC1B4 /* someNews.txt in Resources */,
 				8F6390802A35AF4600BDB032 /* Preview Assets.xcassets in Resources */,
 				8F63908A2A35FBD700BDB032 /* news.txt in Resources */,
 				8FCB124C2A41E2C0007EE767 /* review.txt in Resources */,
@@ -171,6 +181,8 @@
 				8F6390792A35AF4500BDB032 /* NewsRecomApp.swift in Sources */,
 				8F5414C72A36BE0B007307A7 /* UserproView.swift in Sources */,
 				8F63908E2A36A28E00BDB032 /* SearchView.swift in Sources */,
+				8F4A10732ABC2E6F009FC1B4 /* LoginView.swift in Sources */,
+				8F4A10712AB8A432009FC1B4 /* NewsDetail.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -296,9 +308,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"NewsRecom/Preview Content\"";
+				DEVELOPMENT_TEAM = 25FSCU2Q7D;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -306,6 +320,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -324,9 +339,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"NewsRecom/Preview Content\"";
+				DEVELOPMENT_TEAM = 25FSCU2Q7D;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -334,6 +351,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
