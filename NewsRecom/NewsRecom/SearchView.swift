@@ -29,9 +29,22 @@ class KeyboardManager: ObservableObject {
 }
 
 class LoginManager: ObservableObject {
-    @Published var isLoggedIn: Bool = false
-    @Published var userName: String = ""
+    @Published var isLoggedIn: Bool {
+        didSet {
+            UserDefaults.standard.set(isLoggedIn, forKey: "isLoggedIn")
+        }
+    }
+//    @Published var userName: String = ""
     @Published  var password: String = ""
+    @Published var userName: String {
+        didSet {
+            UserDefaults.standard.set(userName, forKey: "userName")
+        }
+    }
+    init() {
+        self.isLoggedIn = UserDefaults.standard.bool(forKey: "isLoggedIn")
+        self.userName = UserDefaults.standard.string(forKey: "userName") ?? "default"
+    }
 }
 
 struct SearchView: View {
@@ -46,6 +59,7 @@ struct SearchView: View {
     @State private var showSearch = false
     @State private var showUser = false
     @State private var showReview = false
+    @State private var showMenu = false
     @State private var searchText = ""
     @State private var circleColors: [Color] = [Color("cus_green"), Color("cus_blue"), Color("cus_red"), .gray, .orange]
     @State private var circleDiameters: [CGFloat] = [70, 150, 130, 70, 100]
@@ -82,7 +96,9 @@ struct SearchView: View {
                             .italic()
                         HStack {
                             Button (action:{
-                                
+                                withAnimation {
+                                    showMenu.toggle()
+                                }
                             }) {
                                 Image(systemName: "line.horizontal.3")
                                     .bold()
@@ -92,12 +108,23 @@ struct SearchView: View {
                             Button (action:{
                                 showUser = true;
                             }) {
-                                Image("user_profile")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(width: 40, height: 40)
-                                    .clipShape(Circle())
-                                    .padding(.trailing, 5)
+                                if loginManager.isLoggedIn {
+                                    Image("user_profile")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(width: 40, height: 40)
+                                        .clipShape(Circle())
+                                        .padding(.trailing, 5)
+                                }
+                                else {
+                                    Image(systemName: "person.crop.circle.badge.questionmark")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 40, height: 40)
+                                        .foregroundColor(Color.white.opacity(0.6))
+                                        .clipShape(Circle())
+                                        .padding(.trailing, 5)
+                                }
                             }
                             .sheet(isPresented: $showUser) {
                                 
@@ -212,6 +239,9 @@ struct SearchView: View {
                     Spacer(minLength: keyboardManager.keyboardHeight>0 ? 0 : 60)
                     
                 }
+//                .frame(maxWidth: .infinity, maxHeight: .infinity)
+//                .background(Color.blue)
+//                .zIndex(1) // 确保主视图在顶部
                 //MARK: - 前进按钮
                 .background(
                     NavigationLink (destination: ContentView()) {
@@ -231,6 +261,53 @@ struct SearchView: View {
                         .disabled(selectedCircleIndices.count>0 ? false : true)
                     
                     , alignment: .bottom)
+                
+                if showMenu {
+                    VStack(alignment: .leading) {
+                        HStack {
+                            Spacer()
+                            Button (action:{
+                                withAnimation {
+                                    showMenu.toggle()
+                                }
+                            }) {
+                                Image(systemName: "arrow.left")
+                                    .bold()
+                                    .foregroundColor(Color.white)
+                                    .font(.system(size: 30))
+                            }
+//                            Spacer()
+                        }
+                        VStack {
+                            Button (action:{
+                                
+                            }) {
+                                Text("按钮1")
+                                    .font(.system(size: 20))
+                                    .foregroundColor(Color.white)
+                            }
+                            .padding(.bottom, 30)
+                            
+                            Button (action:{
+                                
+                            }) {
+                                Text("按钮2")
+                                    .font(.system(size: 20))
+                                    .foregroundColor(Color.white)
+                            }
+                            .padding(.bottom, 30)
+                        }
+                        .padding(.leading, 30)
+                        .padding(.vertical, 50)
+                        Spacer()
+                    }
+                    .frame(width: 180)
+                    .padding()
+                    .background(Color("Top_color"))
+                    .transition(.move(edge: .leading))
+                    .zIndex(1) // 确保主视图在顶部
+                    .offset(x:-110)
+                }
                 
             }
             

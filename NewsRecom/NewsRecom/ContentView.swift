@@ -11,7 +11,7 @@ struct ContentView: View {
     
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    
+    @EnvironmentObject var loginManager: LoginManager
     
     
     @State private var selectedTab = 1
@@ -20,10 +20,11 @@ struct ContentView: View {
     @State private var showSearch = false
     @State private var showUser = false
     @State private var showReview = false
+    @State private var showMenu = false
     
     var body: some View {
-//        NavigationView {
             VStack (spacing:0) {
+                
                 ZStack {
                     Text("宽视资讯")
                         .foregroundColor(Color.white)
@@ -31,33 +32,92 @@ struct ContentView: View {
                         .bold()
                         .italic()
                     HStack {
-                        Button (action:{
-                            
-                        }) {
-                            Image(systemName: "line.horizontal.3")
-                                .bold()
-                                .foregroundColor(Color.white)
-                        }
+//                        Button (action:{
+//                            withAnimation {
+//                                showMenu.toggle()
+//                            }
+//                        }) {
+//                            Image(systemName: "line.horizontal.3")
+//                                .bold()
+//                                .foregroundColor(Color.white)
+//                        }
                         Spacer()
                         Button (action:{
                             showUser = true;
                         }) {
-                            Image("user_profile")
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: 40, height: 40)
-                                .clipShape(Circle())
-                                .padding(.trailing, 5)
+                            if loginManager.isLoggedIn {
+                                Image("user_profile")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 40, height: 40)
+                                    .clipShape(Circle())
+                                    .padding(.trailing, 5)
+                            }
+                            else {
+                                Image(systemName: "person.crop.circle.badge.questionmark")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 40, height: 40)
+                                    .foregroundColor(Color.white.opacity(0.6))
+                                    .clipShape(Circle())
+                                    .padding(.trailing, 5)
+                            }
                         }
                         .sheet(isPresented: $showUser) {
-                            UserproView()
+                            
+                            if loginManager.isLoggedIn {
+                                UserproView()
+                            }
+                            else {
+                                LoginView(showUser: $showUser)
                                 
+                            }
                         }
                     }
                 }
                 .padding(.horizontal, 20)
                 .padding(.bottom, 8)
                 .background(Color("Top_color"))
+                
+                
+                
+                
+                
+                
+//                ZStack {
+//                    Text("宽视资讯")
+//                        .foregroundColor(Color.white)
+//                        .font(.title)
+//                        .bold()
+//                        .italic()
+//                    HStack {
+//                        Button (action:{
+//
+//                        }) {
+//                            Image(systemName: "line.horizontal.3")
+//                                .bold()
+//                                .foregroundColor(Color.white)
+//                        }
+//                        Spacer()
+//                        Button (action:{
+//                            showUser = true;
+//                        }) {
+//                            Image("user_profile")
+//                                .resizable()
+//                                .aspectRatio(contentMode: .fill)
+//                                .frame(width: 40, height: 40)
+//                                .clipShape(Circle())
+//                                .padding(.trailing, 5)
+//                        }
+//                        .sheet(isPresented: $showUser) {
+//                            UserproView()
+//
+//                        }
+//                    }
+//                }
+//                .padding(.horizontal, 20)
+//                .padding(.bottom, 8)
+//                .background(Color("Top_color"))
                 
                 ScrollView (.vertical, showsIndicators: false) {
                     VStack {
@@ -192,5 +252,6 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+            .environmentObject(LoginManager())
     }
 }
